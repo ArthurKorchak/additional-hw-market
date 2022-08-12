@@ -1,0 +1,81 @@
+img {
+    display: block
+}
+
+header {
+    display: flex;
+    gap: 15px;
+    padding: 15px 5px;
+    border-bottom: 1px solid #000000;
+}
+
+header.button {
+    height: 28px;
+    font-size: 15px;
+}
+
+.btnSet {
+    display: flex;
+    gap: 15px;
+}
+
+.toBasket {
+    margin-right: 5px;
+}
+
+input {
+    height: 22px;
+}
+
+.searchForm {
+    display: flex;
+    gap: 5px;
+}
+
+.contentHead {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    padding: 0 5px;
+    height: 40px;
+    gap: 15px;
+    background-color:rgb(127, 255, 212);
+    border: 1px solid rgb(102, 156, 138);
+    border-radius: 8px;
+}
+
+.content {
+    padding-top: 15px;
+}
+
+.contentHead button{
+    height: 25px;
+}
+
+.wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    gap: 15px;
+    
+}
+
+.card {
+    width: 200px;
+    text-align: center;
+    border: 1px solid #000000;
+    padding-bottom: 10px;
+}
+
+.foot {
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid #000000;
+    padding: 0px 10px;
+}
+
+.btns {
+    display: flex;
+    gap: 5px;
+    justify-content: center;
+}
