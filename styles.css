@@ -32,6 +32,13 @@ input {
     gap: 5px;
 }
 
+.contentArea {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-top: 15px;
+}
+
 .contentHead {
     display: flex;
     align-items: center;
@@ -42,10 +49,6 @@ input {
     background-color:rgb(127, 255, 212);
     border: 1px solid rgb(102, 156, 138);
     border-radius: 8px;
-}
-
-.content {
-    padding-top: 15px;
 }
 
 .contentHead button{
@@ -61,7 +64,7 @@ input {
 }
 
 .card {
-    width: 200px;
+    width: 220px;
     text-align: center;
     border: 1px solid #000000;
     padding-bottom: 10px;
@@ -69,6 +72,7 @@ input {
 
 .foot {
     display: flex;
+    align-items: center;
     justify-content: space-between;
     border-top: 1px solid #000000;
     padding: 0px 10px;
@@ -78,4 +82,48 @@ input {
     display: flex;
     gap: 5px;
     justify-content: center;
+}
+
+.currenciesList {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid #000000;
+    padding: 10px;
+    margin-left: 15px;
+    width: max-content;
+    height: min-content;
+}
+
+.currenciesList > p {
+    border-bottom: 2px solid #000000;
+    margin: 0 0 12px 0;
+}
+
+.currencieCard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.currencieCard:not(:last-child) {
+    border-bottom: 2px solid #000000;
+    margin: 0 0 12px 0;
+}
+
+.currencieCard p,a,img {
+    display: inline-block;
+    margin: 0;
+}
+
+.currencieCard a {
+    display: flex;
+    justify-content: center;
+    text-decoration: none;
+    gap: 5px;
+}
+
+.currencieCard img {
+    margin-bottom: 5px;
 }

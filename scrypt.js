@@ -16,13 +16,23 @@ const instruments = [{
 }, {
     id: 4,
     img: 'https://static.dnipro-m.ua/cache/products/1754/catalog_origin_141546.jpg',
-    name: 'Молоток',
+    name: 'Молоток Premium+',
     price: 175
 }];
 
 const content = document.querySelector('.content');
+const currenciesList = document.querySelector('.currenciesList');
+const currenciesListFiat = {
+    icon: 'https://upload.wikimedia.org/wikipedia/commons/7/7f/PrivatBank-corporate-logo-latina.png',
+    href: 'https://privatbank.ua/map'
+};
+const currenciesListBTC = {
+    icon: 'https://upload.wikimedia.org/wikipedia/commons/1/12/Binance_logo.svg',
+    href: 'https://www.binance.com/uk-UA/convert'
+};
+let usdValue;
 
-elemGen(instruments);
+currenciesOperations()
 itemRemover();
 storageOperator('Favorite');
 storageOperator('Basket');
@@ -78,10 +88,11 @@ function favoriteOperator() {
 function basketOperator() {
     if (localStorage.getItem('itemsBasket').length > 2) {
         const currentBask = Array.from(JSON.parse(localStorage.getItem('itemsBasket')));
+        const totalPrice = currentBask.reduce((acc, el) => { return acc += el.price; }, 0);
         elemGen(currentBask);
         content.insertAdjacentHTML("afterbegin", `<div class="contentHead">
             <p>Товарів у корзині: ${currentBask.length}</p>
-            <p>Загальна вартість: ${currentBask.reduce((acc, el) => { return acc += el.price; }, 0)} credit</p>
+            <p>Загальна вартість: ${totalPrice} ₴ (${(totalPrice / usdValue).toFixed(2)} $)</p>
             <button class="buy">✔️ Замовити</button>
             <button class="basketClear">🗑️ Очистити корзину</button>
             </div>`);
@@ -104,13 +115,13 @@ function basketOperator() {
 };
 
 function elemGen(instruments) {
-    const gen = instruments.reduce((acc, {id, img, name, price}) => {
-        return acc +=
+    const gen = instruments.reduce((acc, { id, img, name, price }) => {
+        return acc +
             `<div class="card" id="${id}">
-                <img src="${img}" width="200">
+                <img src="${img}" width="220">
                 <div class="foot">
                     <p class="name">${name}</p>
-                    <p class="price">${price} credit</p>
+                    <p class="price">${price} ₴<br> (${(price / usdValue).toFixed(2)} $)</p>
                 </div>
                 <button class="toBasket">Купити</button>
                 <button class="toFavorite">Додати в обрані</button>
@@ -139,4 +150,32 @@ function itemRemover() {
 function cleanerAll(data, mass) {
     localStorage.setItem(`items${data}`, []);
     content.innerHTML = `${mass}`;
+};
+
+function currenciesOperations() {
+    fetch('https://api.privatbank.ua/p24api/pubinfo?exchange&json&coursid=11')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(response.status);
+            }
+            return response.json();
+        })
+        .then(data => {
+            currenciesList.innerHTML = data.reduce((acc, { ccy, base_ccy, buy, sale }) => {
+                ccy === 'BTC' ? param = currenciesListBTC : param = currenciesListFiat;
+                ccy === 'USD' ? usdValue = sale : null;
+                if (ccy === 'RUR') { return acc };
+                buy = Number(buy).toFixed(2);
+                sale = Number(sale).toFixed(2);
+                return acc +
+                    `<div class="currencieCard">
+                    <b class="currencieHead">${ccy} / ${base_ccy}</b>
+                    <p class="currencieActions">Купити / Продати</p>
+                    <p class="currenciePrice">${sale} / ${buy}</p>
+                    <a href="${param.href}" target="_blank">👉<img src="${param.icon}" height="20"></a>
+                </div>`
+            }, ``);
+            elemGen(instruments);
+        })
+        .catch(error => console.log(error));
 };
